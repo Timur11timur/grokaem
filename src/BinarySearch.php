@@ -2,38 +2,42 @@
 
 namespace App;
 
-use phpDocumentor\Reflection\Types\Mixed_;
-
 class BinarySearch
 {
-    private int $low = 0;
-    private int $high;
+    private int $lowElement = 1;
+    private int $highElement;
     private array $list;
     private array $trace = [];
 
     public function __construct(array $list)
     {
-        $this->high = count($list) - 1;
+        $this->highElement = count($list);
         $this->list = $list;
     }
 
     public function find($el): int
     {
+        $lastCurrent = 0;
         do {
-            $current = floor(($this->low + $this->high) / 2);
+            $currentElement = floor(($this->lowElement + $this->highElement) / 2);
 
-            if ( $this->list[$current] === $el) {
-                $this->trace[] = (int) $current + 1;
-                return $current + 1;
-            } elseif($this->list[$current] < $el) {
-                $this->trace[] = (int) $current + 1;
-                $this->low = $current;
+            if ($currentElement === $lastCurrent) {
+                $currentElement++;
             } else {
-                $this->trace[] = (int) $current + 1;
-                $this->high = $current;
+                $lastCurrent = $currentElement;
             }
 
-        } while ($this->low !== $this->high);
+            if ($this->list[$currentElement - 1] === $el) {
+                $this->trace[] = (int) $currentElement;
+                return $currentElement;
+            } elseif($this->list[$currentElement - 1] < $el) {
+                $this->trace[] = (int) $currentElement;
+                $this->lowElement = $currentElement;
+            } else {
+                $this->trace[] = (int) $currentElement;
+                $this->highElement = $currentElement;
+            }
+        } while ($this->lowElement !== $this->highElement);
 
         return 0;
     }
