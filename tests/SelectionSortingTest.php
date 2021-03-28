@@ -54,6 +54,20 @@ class SelectionSortingTest extends TestCase
     }
 
     /** @test */
+    public function it_sorts_array_with_strings()
+    {
+        $array = ['ccc', 'aaa', 'bbb'];
+
+        $sorting = new SelectionSorting('min');
+
+        $this->assertEquals(['aaa', 'bbb', 'ccc'], $sorting->sort($array));
+
+        $sortingMax = new SelectionSorting('max');
+
+        $this->assertEquals(['ccc', 'bbb', 'aaa'], $sortingMax->sort($array));
+    }
+
+    /** @test */
     public function it_throws_error_if_wrong_order()
     {
         $this->expectException(\Exception::class);
