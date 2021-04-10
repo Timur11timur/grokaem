@@ -2,7 +2,7 @@
 
 namespace App;
 
-class ArraySum
+class RecursiveArraySum
 {
     private int $result = 0;
 
