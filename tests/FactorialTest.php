@@ -25,7 +25,6 @@ class FactorialTest extends TestCase
     public function it_counts_factorial_of_zero()
     {
         $this->assertEquals(1, Factorial::instance()->count(0));
-
     }
 
     /** @test */
