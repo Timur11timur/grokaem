@@ -16,16 +16,8 @@ class Deikstra
     public function getAmount(): int
     {
         $this->setArray();
-        foreach ($this->elements as $key => $value) {
-            foreach ($value as $way) {
-                print_r($key);
-                $amount = $this->getParentAmount($key);
-                if (($this->array[$way['name']]['amount'] == '-') || ($this->array[$way['name']]['amount'] > ($way['amount'] + $amount))) {
-                    $this->array[$way['name']]['parent'] = $key;
-                    $this->array[$way['name']]['amount'] = ($way['amount'] + $amount);
-                }
-            }
-        }
+
+        $this->process($this->elements);
 
         return end($this->array)['amount'];
     }
@@ -39,10 +31,29 @@ class Deikstra
         return array_reverse($this->getParent(end($this->array)['name']));
     }
 
+    private function process(array $elements): void
+    {
+        foreach ($elements as $key => $value) {
+            foreach ($value as $way) {
+                $amount = $this->getParentAmount($key);
+                if (($this->array[$way['name']]['amount'] == '-') || ($this->array[$way['name']]['amount'] > ($way['amount'] + $amount))) {
+                    $this->array[$way['name']]['parent'] = $key;
+                    $this->array[$way['name']]['amount'] = ($way['amount'] + $amount);
+                    if ($this->array[$way['name']]['finished']) { //recalculate already finished node
+                        $newElements = [];
+                        $newElements[$way['name']] = $this->elements[$way['name']];
+                        $this->process($newElements);
+                    }
+                }
+            }
+            $this->array[$key]['finished'] = true;
+        }
+    }
+
     private function setArray(): void
     {
         foreach ($this->elements as $key => $value) {
-            $this->array[$key] = ['name' => $key, 'parent' => '-', 'amount' => '-'];
+            $this->array[$key] = ['name' => $key, 'parent' => '-', 'amount' => '-', 'finished' => false];
         }
     }
 
