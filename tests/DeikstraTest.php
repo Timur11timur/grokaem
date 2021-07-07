@@ -119,4 +119,134 @@ class DeikstraTest extends TestCase
         $this->assertEquals(11, $result->getAmount());
         $this->assertSame(['AA', 'BB', 'DD', 'CC', 'EE', 'FF'], $result->getRoute());
     }
+
+    /** @test */
+    public function it_works_four()
+    {
+        //For usage you have to describe whole elements
+        $elements = [];
+
+        $elements['Start'] = [
+            ['name' => 'A', 'amount' => 6],
+            ['name' => 'B', 'amount' => 2],
+        ];
+
+        $elements['A'] = [
+            ['name' => 'Fin', 'amount' => 1],
+        ];
+
+        $elements['B'] = [
+            ['name' => 'A', 'amount' => 3],
+            ['name' => 'Fin', 'amount' => 5],
+        ];
+
+        $elements['Fin'] = [];
+
+        $result = new Deikstra($elements);
+
+        $this->assertEquals(6, $result->getAmount());
+        $this->assertSame(['Start', 'B', 'A', 'Fin'], $result->getRoute());
+    }
+
+    /** @test */
+    public function it_works_A()
+    {
+        //For usage you have to describe whole elements
+        $elements = [];
+
+        $elements['Start'] = [
+            ['name' => 'A', 'amount' => 5],
+            ['name' => 'C', 'amount' => 2],
+        ];
+
+        $elements['A'] = [
+            ['name' => 'B', 'amount' => 4],
+            ['name' => 'D', 'amount' => 2],
+        ];
+
+        $elements['C'] = [
+            ['name' => 'A', 'amount' => 8],
+            ['name' => 'D', 'amount' => 7],
+        ];
+
+        $elements['B'] = [
+            ['name' => 'D', 'amount' => 6],
+            ['name' => 'Fin', 'amount' => 3],
+        ];
+
+        $elements['D'] = [
+            ['name' => 'Fin', 'amount' => 1],
+        ];
+
+        $elements['Fin'] = [];
+
+        $result = new Deikstra($elements);
+
+        $this->assertEquals(8, $result->getAmount());
+        $this->assertSame(['Start', 'A', 'D', 'Fin'], $result->getRoute());
+    }
+
+    /** @test */
+    public function it_works_B()
+    {
+        //For usage you have to describe whole elements
+        $elements = [];
+
+        $elements['Start'] = [
+            ['name' => 'A', 'amount' => 10],
+        ];
+
+        $elements['A'] = [
+            ['name' => 'B', 'amount' => 20],
+        ];
+
+        $elements['B'] = [
+            ['name' => 'C', 'amount' => 1],
+            ['name' => 'Fin', 'amount' => 30],
+        ];
+
+        $elements['C'] = [
+            ['name' => 'A', 'amount' => 1],
+        ];
+
+        $elements['Fin'] = [];
+
+        $result = new Deikstra($elements);
+
+        $this->assertEquals(60, $result->getAmount());
+        $this->assertSame(['Start', 'A', 'B', 'Fin'], $result->getRoute());
+    }
+
+    /** @test */
+    public function it_works_C()
+    {
+        //For usage you have to describe whole elements
+        $elements = [];
+
+        $elements['Start'] = [
+            ['name' => 'A', 'amount' => 2],
+            ['name' => 'B', 'amount' => 2],
+        ];
+
+        $elements['A'] = [
+            ['name' => 'Fin', 'amount' => 2],
+            ['name' => 'C', 'amount' => 2],
+        ];
+
+        $elements['B'] = [
+            ['name' => 'A', 'amount' => 2],
+        ];
+
+        $elements['C'] = [
+            ['name' => 'Fin', 'amount' => 2],
+            ['name' => 'B', 'amount' => -1],
+        ];
+
+        $elements['Fin'] = [];
+
+        $result = new Deikstra($elements);
+
+        $this->assertEquals(4, $result->getAmount());
+        $this->assertSame(['Start', 'A', 'Fin'], $result->getRoute());
+    }
 }
